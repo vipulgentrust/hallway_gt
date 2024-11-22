@@ -3,121 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Christmas Tree</title>
+    <title>Magical Christmas Tree</title>
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to bottom, #0a2e5d, #1a1a1a);
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(180deg, #0a122a, #1a1a1a);
             color: white;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             height: 100vh;
+        }
+
+        .clock {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            font-weight: bold;
         }
 
         .tree-container {
             position: relative;
-            width: 90%;
-            max-width: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 80%;
         }
 
         .tree {
-            width: 0;
-            height: 0;
-            border-left: 100px solid transparent;
-            border-right: 100px solid transparent;
-            border-bottom: 150px solid #27ae60;
-            margin: 0 auto;
             position: relative;
+            width: 180px;
+            height: 260px;
+            background: url('https://i.imgur.com/1s72MwE.png') no-repeat center center;
+            background-size: contain;
+            animation: pulse 4s infinite ease-in-out;
         }
 
-        .tree .light {
-            width: 10px;
-            height: 10px;
+        .light {
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             position: absolute;
-            animation: blink 1s infinite;
+            animation: glow 1.5s infinite alternate ease-in-out;
         }
 
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+        @keyframes glow {
+            0% { transform: scale(1); opacity: 0.7; }
+            100% { transform: scale(1.3); opacity: 1; }
         }
 
-        /* Lights positioning */
-        .light-1 { background-color: red; top: 20%; left: 40%; }
-        .light-2 { background-color: yellow; top: 30%; left: 60%; }
-        .light-3 { background-color: blue; top: 50%; left: 50%; }
-        .light-4 { background-color: pink; top: 70%; left: 30%; }
-
-        .clock {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 16px;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 10px 15px;
-            border-radius: 10px;
-            text-align: center;
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
         }
+
+        .light-1 { top: 40px; left: 60px; }
+        .light-2 { top: 80px; left: 30px; }
+        .light-3 { top: 100px; left: 110px; }
+        .light-4 { top: 150px; left: 50px; }
+        .light-5 { top: 190px; left: 80px; }
 
         footer {
-            position: absolute;
+            position: fixed;
             bottom: 10px;
             width: 100%;
             text-align: center;
-            font-size: 14px;
-            color: #a0c4ff;
-            text-shadow: 0 0 5px white;
+            font-size: 16px;
+            color: #c6e2ff;
+            text-shadow: 0 0 8px white;
+        }
+
+        .footer-bar {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 10px;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
         }
     </style>
 </head>
 <body>
-    <div class="clock" id="clock"></div>
+    <!-- Clock -->
+    <div class="clock" id="clock">00:00:00</div>
+
+    <!-- Christmas Tree -->
     <div class="tree-container">
         <div class="tree">
+            <!-- Blinking Lights -->
             <div class="light light-1"></div>
             <div class="light light-2"></div>
             <div class="light light-3"></div>
             <div class="light light-4"></div>
+            <div class="light light-5"></div>
         </div>
     </div>
+
+    <!-- Footer -->
     <footer>
-        GenTrust Tech Innovations AIRIA
+        <div class="footer-bar">GenTrust Tech Innovations AIRIA</div>
     </footer>
 
     <script>
+        // Update the clock dynamically
         function updateClock() {
             const now = new Date();
-            const hours = now.getHours().toString().padStart(2, '0');
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            const seconds = now.getSeconds().toString().padStart(2, '0');
-            document.getElementById('clock').innerText = `${hours}:${minutes}:${seconds}`;
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
         }
 
+        // Change lights dynamically based on the time of day
         function changeTreeLights() {
             const now = new Date();
             const hours = now.getHours();
             const lights = document.querySelectorAll('.light');
             lights.forEach((light, index) => {
-                if (hours >= 6 && hours < 18) {
-                    light.style.backgroundColor = ['red', 'yellow', 'blue', 'pink'][index];
-                } else {
-                    light.style.backgroundColor = ['green', 'purple', 'white', 'orange'][index];
-                }
+                const colorsDay = ['#ff4c4c', '#ffc34c', '#4c83ff', '#ff4c9d', '#4cff65'];
+                const colorsNight = ['#72ff72', '#ff8a72', '#72a8ff', '#f9ff72', '#ff72ea'];
+                light.style.backgroundColor = (hours >= 6 && hours < 18)
+                    ? colorsDay[index % colorsDay.length]
+                    : colorsNight[index % colorsNight.length];
+                light.style.boxShadow = `0 0 15px ${light.style.backgroundColor}`;
             });
         }
 
+        // Initial function calls
+        updateClock();
+        changeTreeLights();
+
+        // Periodically update clock and lights
         setInterval(() => {
             updateClock();
             changeTreeLights();
         }, 1000);
-
-        updateClock();
-        changeTreeLights();
     </script>
 </body>
 </html>
