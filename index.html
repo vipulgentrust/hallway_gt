@@ -5,148 +5,183 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Magical Christmas Tree</title>
     <style>
+        /* General Styling */
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(180deg, #0a122a, #1a1a1a);
-            color: white;
+            font-family: 'Georgia', serif;
+            background: url('bg.png') no-repeat center center;
+            background-size: cover; /* Ensure the background covers the entire page */
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            justify-content: flex-end;
             align-items: center;
-            justify-content: space-between;
             height: 100vh;
+            position: relative;
         }
 
-        .clock {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            font-size: 24px;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 10px 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-            font-weight: bold;
-        }
-
+        /* Christmas Tree */
         .tree-container {
             position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 80%;
+            z-index: 2;
+            width: auto;
+            height: auto;
+            margin-bottom: 20px;
         }
 
-        .tree {
-            position: relative;
-            width: 180px;
-            height: 260px;
-            background: url('https://i.imgur.com/1s72MwE.png') no-repeat center center;
-            background-size: contain;
-            animation: pulse 4s infinite ease-in-out;
+        .tree-container img {
+            display: block;
+            max-width: 100%;
+            height: auto;
         }
 
-        .light {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
+        /* Floating White Stars */
+        .floating-star {
             position: absolute;
-            animation: glow 1.5s infinite alternate ease-in-out;
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 15px white;
+            animation: floatStar 5s linear infinite;
         }
 
-        @keyframes glow {
-            0% { transform: scale(1); opacity: 0.7; }
-            100% { transform: scale(1.3); opacity: 1; }
+        @keyframes floatStar {
+            0% { transform: translate(0, 0); opacity: 1; }
+            25% { transform: translate(50px, 50px); opacity: 0.8; }
+            50% { transform: translate(-50px, 100px); opacity: 1; }
+            100% { transform: translate(0, 200px); opacity: 0; }
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
+        /* Vibrant Shooting Stars */
+        .vibrant-star {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 20px white;
+            opacity: 0;
+            animation: shootVibrant 3s ease-in-out;
         }
 
-        .light-1 { top: 40px; left: 60px; }
-        .light-2 { top: 80px; left: 30px; }
-        .light-3 { top: 100px; left: 110px; }
-        .light-4 { top: 150px; left: 50px; }
-        .light-5 { top: 190px; left: 80px; }
-
-        footer {
-            position: fixed;
-            bottom: 10px;
-            width: 100%;
-            text-align: center;
-            font-size: 16px;
-            color: #c6e2ff;
-            text-shadow: 0 0 8px white;
+        @keyframes shootVibrant {
+            0% { opacity: 0; transform: translate(0, 0) scale(1); }
+            50% { opacity: 1; transform: translate(150px, 200px) scale(1.5); }
+            100% { opacity: 0; transform: translate(300px, 400px) scale(0.8); }
         }
 
-        .footer-bar {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 8px 15px;
-            border-radius: 10px;
-            display: inline-block;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+        /* Magical Emojis */
+        .emoji {
+            position: absolute;
+            font-size: 30px;
+            opacity: 1;
+            animation: floatEmoji 6s linear;
+            z-index: 3; /* Ensures emojis appear over the tree */
+        }
+
+        @keyframes floatEmoji {
+            0% { transform: translateY(0); opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(100vh); opacity: 0; }
         }
     </style>
 </head>
 <body>
-    <!-- Clock -->
-    <div class="clock" id="clock">00:00:00</div>
-
     <!-- Christmas Tree -->
     <div class="tree-container">
-        <div class="tree">
-            <!-- Blinking Lights -->
-            <div class="light light-1"></div>
-            <div class="light light-2"></div>
-            <div class="light light-3"></div>
-            <div class="light light-4"></div>
-            <div class="light light-5"></div>
-        </div>
+        <img src="xmas_tree.png" alt="Christmas Tree">
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-bar">GenTrust Tech Innovations AIRIA</div>
-    </footer>
-
+    <!-- Floating Stars and Emojis -->
     <script>
-        // Update the clock dynamically
-        function updateClock() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+        // Create floating white stars
+        function createFloatingStar() {
+            const star = document.createElement('div');
+            star.classList.add('floating-star');
+            document.body.appendChild(star);
+
+            // Randomize starting position
+            const startX = Math.random() * window.innerWidth;
+            star.style.left = `${startX}px`;
+            star.style.top = `0px`;
+
+            // Remove star after animation
+            setTimeout(() => star.remove(), 5000);
         }
 
-        // Change lights dynamically based on the time of day
-        function changeTreeLights() {
-            const now = new Date();
-            const hours = now.getHours();
-            const lights = document.querySelectorAll('.light');
-            lights.forEach((light, index) => {
-                const colorsDay = ['#ff4c4c', '#ffc34c', '#4c83ff', '#ff4c9d', '#4cff65'];
-                const colorsNight = ['#72ff72', '#ff8a72', '#72a8ff', '#f9ff72', '#ff72ea'];
-                light.style.backgroundColor = (hours >= 6 && hours < 18)
-                    ? colorsDay[index % colorsDay.length]
-                    : colorsNight[index % colorsNight.length];
-                light.style.boxShadow = `0 0 15px ${light.style.backgroundColor}`;
-            });
+        // Create vibrant shooting stars
+        function createVibrantStar() {
+            const vibrantStar = document.createElement('div');
+            vibrantStar.classList.add('vibrant-star');
+            document.body.appendChild(vibrantStar);
+
+            // Randomize starting position
+            const startX = Math.random() * window.innerWidth;
+            const startY = Math.random() * window.innerHeight / 2;
+
+            // Randomize ending positions and size
+            const size = Math.random() * 15 + 10; // Between 10px and 25px
+            const endX = startX + (Math.random() * 300 - 150);
+            const endY = startY + Math.random() * 400;
+
+            vibrantStar.style.left = `${startX}px`;
+            vibrantStar.style.top = `${startY}px`;
+            vibrantStar.style.width = `${size}px`;
+            vibrantStar.style.height = `${size}px`;
+            vibrantStar.style.backgroundColor = `hsl(${Math.random() * 360}, 80%, 70%)`; // Vibrant colors
+
+            // Apply animation
+            vibrantStar.style.animation = `shootVibrant ${Math.random() * 2 + 1}s ease-in-out`;
+
+            // Remove star after animation
+            setTimeout(() => vibrantStar.remove(), 3000);
         }
 
-        // Initial function calls
-        updateClock();
-        changeTreeLights();
+        // Create magical emojis entering from left or right
+        function createEmoji() {
+            const emoji = document.createElement('div');
+            emoji.classList.add('emoji');
 
-        // Periodically update clock and lights
+            // Randomize the emoji
+            const emojis = ['❄️', '🔔']; // Only snowflakes and bells
+            emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+
+            // Randomize entry direction (left or right)
+            const direction = Math.random() < 0.5 ? 'left' : 'right';
+            if (direction === 'left') {
+                emoji.style.left = `-50px`;
+                emoji.style.animation = `floatEmoji 6s linear`;
+            } else {
+                emoji.style.left = `${window.innerWidth}px`;
+                emoji.style.animation = `floatEmoji 6s linear reverse`;
+            }
+
+            // Randomize vertical position
+            emoji.style.top = `${Math.random() * window.innerHeight}px`;
+
+            // Add emoji to the body
+            document.body.appendChild(emoji);
+
+            // Remove emoji after animation
+            setTimeout(() => emoji.remove(), 6000);
+        }
+
+        // Trigger floating white stars every 500ms
         setInterval(() => {
-            updateClock();
-            changeTreeLights();
-        }, 1000);
+            createFloatingStar();
+        }, 500);
+
+        // Trigger vibrant shooting stars every 3 seconds
+        setInterval(() => {
+            createVibrantStar();
+        }, 3000);
+
+        // Trigger magical emojis every 1.5 seconds
+        setInterval(() => {
+            createEmoji();
+        }, 1500);
     </script>
 </body>
 </html>
