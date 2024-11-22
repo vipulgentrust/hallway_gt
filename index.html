@@ -2,14 +2,122 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Video Playback</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christmas Tree</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #0a2e5d, #1a1a1a);
+            color: white;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .tree-container {
+            position: relative;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .tree {
+            width: 0;
+            height: 0;
+            border-left: 100px solid transparent;
+            border-right: 100px solid transparent;
+            border-bottom: 150px solid #27ae60;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .tree .light {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            position: absolute;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Lights positioning */
+        .light-1 { background-color: red; top: 20%; left: 40%; }
+        .light-2 { background-color: yellow; top: 30%; left: 60%; }
+        .light-3 { background-color: blue; top: 50%; left: 50%; }
+        .light-4 { background-color: pink; top: 70%; left: 30%; }
+
+        .clock {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        footer {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+            font-size: 14px;
+            color: #a0c4ff;
+            text-shadow: 0 0 5px white;
+        }
+    </style>
 </head>
 <body>
+    <div class="clock" id="clock"></div>
+    <div class="tree-container">
+        <div class="tree">
+            <div class="light light-1"></div>
+            <div class="light light-2"></div>
+            <div class="light light-3"></div>
+            <div class="light light-4"></div>
+        </div>
+    </div>
+    <footer>
+        GenTrust Tech Innovations AIRIA
+    </footer>
 
-<video width="480" height="720" controls autoplay loop>
-    <source src="https://github.com/vipulgentrust/hallway_gt/blob/main/hallway%20-%20Trim.mp4?raw=true" type="video/mp4">
-    Your browser does not support the video tag.
-</video>
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            document.getElementById('clock').innerText = `${hours}:${minutes}:${seconds}`;
+        }
 
+        function changeTreeLights() {
+            const now = new Date();
+            const hours = now.getHours();
+            const lights = document.querySelectorAll('.light');
+            lights.forEach((light, index) => {
+                if (hours >= 6 && hours < 18) {
+                    light.style.backgroundColor = ['red', 'yellow', 'blue', 'pink'][index];
+                } else {
+                    light.style.backgroundColor = ['green', 'purple', 'white', 'orange'][index];
+                }
+            });
+        }
+
+        setInterval(() => {
+            updateClock();
+            changeTreeLights();
+        }, 1000);
+
+        updateClock();
+        changeTreeLights();
+    </script>
 </body>
 </html>
