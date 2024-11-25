@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magical Christmas Tree</title>
+    <style>
+        /* General Styling */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Georgia', serif;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+        }
+
+        /* Background Video */
+        #background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1; /* Ensures the video stays behind all content */
+        }
+
+        /* Christmas Tree */
+        .tree-container {
+            position: relative;
+            z-index: 2;
+            width: auto;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        /* Floating White Stars */
+        .floating-star {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 15px white;
+            animation: floatStar 5s linear infinite;
+        }
+
+        @keyframes floatStar {
+            0% { transform: translate(0, 0); opacity: 1; }
+            25% { transform: translate(50px, 50px); opacity: 0.8; }
+            50% { transform: translate(-50px, 100px); opacity: 1; }
+            100% { transform: translate(0, 200px); opacity: 0; }
+        }
+
+        /* Vibrant Shooting Stars */
+        .vibrant-star {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 20px white;
+            opacity: 0;
+            animation: shootVibrant 3s ease-in-out;
+        }
+
+        @keyframes shootVibrant {
+            0% { opacity: 0; transform: translate(0, 0) scale(1); }
+            50% { opacity: 1; transform: translate(150px, 200px) scale(1.5); }
+            100% { opacity: 0; transform: translate(300px, 400px) scale(0.8); }
+        }
+
+        /* Magical Emojis */
+        .emoji {
+            position: absolute;
+            font-size: 30px;
+            opacity: 1;
+            animation: floatEmoji 6s linear;
+            z-index: 3; /* Ensures emojis appear over the tree */
+        }
+
+        @keyframes floatEmoji {
+            0% { transform: translateY(0); opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Video -->
+    <video id="background-video" autoplay loop muted>
+        <source src="xmas_tree.MOV" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- Christmas Tree -->
+    <div class="tree-container">
+        <!-- Additional Christmas Tree Content -->
+    </div>
+
+    <!-- Floating Stars and Emojis -->
+    <script>
+        // Create floating white stars
+        function createFloatingStar() {
+            const star = document.createElement('div');
+            star.classList.add('floating-star');
+            document.body.appendChild(star);
+
+            // Randomize starting position
+            const startX = Math.random() * window.innerWidth;
+            star.style.left = `${startX}px`;
+            star.style.top = `0px`;
+
+            // Remove star after animation
+            setTimeout(() => star.remove(), 5000);
+        }
+
+        // Create vibrant shooting stars
+        function createVibrantStar() {
+            const vibrantStar = document.createElement('div');
+            vibrantStar.classList.add('vibrant-star');
+            document.body.appendChild(vibrantStar);
+
+            // Randomize starting position
+            const startX = Math.random() * window.innerWidth;
+            const startY = Math.random() * window.innerHeight / 2;
+
+            const size = Math.random() * 15 + 10; // Between 10px and 25px
+            const endX = startX + (Math.random() * 300 - 150);
+            const endY = startY + Math.random() * 400;
+
+            vibrantStar.style.left = `${startX}px`;
+            vibrantStar.style.top = `${startY}px`;
+            vibrantStar.style.width = `${size}px`;
+            vibrantStar.style.height = `${size}px`;
+            vibrantStar.style.backgroundColor = `hsl(${Math.random() * 360}, 80%, 70%)`; // Vibrant colors
+
+            vibrantStar.style.animation = `shootVibrant ${Math.random() * 2 + 1}s ease-in-out`;
+
+            setTimeout(() => vibrantStar.remove(), 3000);
+        }
+
+        // Create magical emojis
+        function createEmoji() {
+            const emoji = document.createElement('div');
+            emoji.classList.add('emoji');
+            const emojis = ['❄️', '🔔']; // Snowflakes and bells
+            emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+
+            const direction = Math.random() < 0.5 ? 'left' : 'right';
+            if (direction === 'left') {
+                emoji.style.left = `-50px`;
+                emoji.style.animation = `floatEmoji 6s linear`;
+            } else {
+                emoji.style.left = `${window.innerWidth}px`;
+                emoji.style.animation = `floatEmoji 6s linear reverse`;
+            }
+
+            emoji.style.top = `${Math.random() * window.innerHeight}px`;
+
+            document.body.appendChild(emoji);
+            setTimeout(() => emoji.remove(), 6000);
+        }
+
+        setInterval(() => createFloatingStar(), 500);
+        setInterval(() => createVibrantStar(), 3000);
+        setInterval(() => createEmoji(), 1500);
+    </script>
+</body>
+</html>
