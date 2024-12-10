@@ -6,30 +6,45 @@
     <title>Magical Christmas Tree</title>
     <style>
         /* General Styling */
-        body {
-          margin: 0;
+              body {
+            margin: 0;
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            align-items: center;
             height: 100vh;
-            position: relative;
             background: #000;
         }
-     position: fixed;
+
+        /* Fullscreen Videos */
+        #random-video,
+        #xmas-tree-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        #random-video {
+            display: none; /* Initially hidden */
+        }
+
+        /* Glowing Greeting Panel */
+        #greetings {
+            position: fixed;
             bottom: 10%;
             left: 50%;
             transform: translateX(-50%);
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(245, 245, 245, 0.9));
-            color: #333;
-            font-size: 1.8em;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 2em;
             font-weight: 600;
             padding: 20px 40px;
             border-radius: 25px;
-            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
             opacity: 0;
             display: none; /* Hidden by default */
             z-index: 3;
@@ -41,32 +56,12 @@
         @keyframes fadeInOut {
             0%, 100% {
                 opacity: 0;
-                transform: translateX(-50%) translateY(10px);
             }
-            25%, 75% {
+            20%, 80% {
                 opacity: 1;
-                transform: translateX(-50%) translateY(0);
             }
         }
-       
-        /* Signature Text */
-        #signature {
-            font-size: 0.8em;
-            color: #555;
-            margin-top: 10px;
-              text-align: center;
-        }
-        /* Background Video */ #random-video,
-        #xmas-tree-video {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1;
-        }
-   
+    
 
         /* Christmas Tree */
         .tree-container {
@@ -141,10 +136,34 @@
         <source src="xmas_tree.MOV" type="video/mp4">
         Your browser does not support the video tag.
     </video>
-    <div id="greetings">
-        <span id="current-greeting">Happy Holidays 🎄</span>
-        <div id="signature">Tech Innovations at GenTrust</div>
-    </div>
+    <div id="greetings" style="
+    position: fixed;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    font-size: 2.2em;
+    font-weight: 600;
+    padding: 20px 40px;
+    border-radius: 25px;
+    box-shadow: 0 8px 30px rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(12px);
+    opacity: 0;
+    display: none;
+    z-index: 3;
+    text-align: center;
+    animation: fadeInOut 6s linear infinite;
+">
+    <span id="current-greeting" style="
+        display: block;
+        margin-bottom: 10px;font-size:25px;
+    ">Happy Holidays 🎄</span>
+    <div id="signature" style="
+        font-size: 12px;
+        color: #ddd;
+    ">Tech Innovations at GenTrust</div>
+</div>
     </div>
     <!-- Christmas Tree -->
     <div class="tree-container">
@@ -219,8 +238,7 @@
         setInterval(() => createVibrantStar(), 3000);
         setInterval(() => createEmoji(), 1500);
     </script>
-   <script>
-
+    <script>
         const randomVideo = document.getElementById('random-video');
         const xmasTreeVideo = document.getElementById('xmas-tree-video');
         const greetings = document.getElementById('greetings');
@@ -249,21 +267,22 @@
             updateRandomVideo();
             randomVideo.style.display = 'block';
             xmasTreeVideo.style.display = 'none';
-            greetings.style.display = 'flex'; // Show greetings
-            greetings.style.opacity = '1';
+            greetings.style.display = 'block'; // Show greetings
 
             // Update greetings dynamically
+            greetingIndex = 0; // Reset greeting index
+            currentGreeting.textContent = greetingMessages[greetingIndex];
+
             const greetingInterval = setInterval(() => {
                 greetingIndex = (greetingIndex + 1) % greetingMessages.length;
                 currentGreeting.textContent = greetingMessages[greetingIndex];
-            }, 4000); // Change greeting every 4 seconds
+            }, 6000); // Change greeting every 6 seconds
 
             // Hide random video and show the Christmas tree video after 1 minute
             setTimeout(() => {
                 randomVideo.style.display = 'none';
                 xmasTreeVideo.style.display = 'block';
                 greetings.style.display = 'none'; // Hide greetings
-                greetings.style.opacity = '0';
                 clearInterval(greetingInterval); // Stop rotating greetings
             }, 60000); // Play for 1 minute
         }
@@ -280,12 +299,12 @@
             const seconds = now.getSeconds();
 
             // Refresh the page at xx:00
-            if (minutes === 10 && seconds === 0) {
+            if (minutes === 0 && seconds === 0) {
                 refreshPage();
             }
 
             // Play random video at xx:15, xx:30, xx:45
-            if ([15, 30, 45,3].includes(minutes) && seconds === 0) {
+            if ([15, 30, 46].includes(minutes) && seconds === 0) {
                 playRandomVideo();
             }
         }
