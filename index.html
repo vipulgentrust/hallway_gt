@@ -306,12 +306,12 @@
             const seconds = now.getSeconds();
 
             // Refresh the page at xx:00
-            if (minutes === 0 && seconds === 0) {
+            if (minutes === 55 && seconds === 0) {
                 refreshPage();
             }
 
             // Play random video at xx:15, xx:30, xx:45
-            if ([15, 30, 46].includes(minutes) && seconds === 0) {
+            if ([15, 30, 40, 50].includes(minutes) && seconds === 0) {
                 playRandomVideo();
             }
         }
